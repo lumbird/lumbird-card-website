@@ -9,4 +9,4 @@ jobs:
       - name: Use gh api
         run: |
           gh auth login --with-token < ${{ secrets.GITHUB_TOKEN }}
-          gh api -X DELETE /repos/${{ github.repository_owner }}/${{ github.repository }}/actions/caches/:id
+          gh api -X DELETE /repos/${{ github.repository }}/actions/caches
