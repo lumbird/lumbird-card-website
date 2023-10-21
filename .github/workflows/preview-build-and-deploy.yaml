@@ -6,6 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.repository == 'lumbird/card-website'
 
     steps:
       - name: Checkout code
