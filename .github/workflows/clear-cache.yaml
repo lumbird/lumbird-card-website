@@ -8,5 +8,5 @@ jobs:
     steps:
       - name: Use gh api
         run: |
-          gh auth login --with-token < ${{ secrets.GITHUB_TOKEN }}
-          gh api -X DELETE /repos/${{ github.repository }}/actions/caches
+          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+          gh cache delete --all --repo ${{ github.repository }}
