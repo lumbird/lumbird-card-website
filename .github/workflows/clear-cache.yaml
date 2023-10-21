@@ -1,0 +1,11 @@
+name: Clear Cache
+jobs:
+  clear:
+    runs-on: ubuntu-latest
+    if: github.repository == 'knijam/card-website'
+
+    steps:
+      - name: Delete Repository Cache
+        uses: TheRealRyGuy/clear-cache-action@master
+        env:
+          token: ${{ secrets.GITHUB_TOKEN }}

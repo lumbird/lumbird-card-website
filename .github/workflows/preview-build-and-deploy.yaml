@@ -21,17 +21,17 @@ jobs:
         uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-modules-preview
           restore-keys: |
-            ${{ runner.os }}-node-modules-
+            ${{ runner.os }}-node-modules-preview
 
       - name: Cache website artifacts
         uses: actions/cache@v2
         with:
           path: ./www
-          key: ${{ runner.os }}-website-${{ hashFiles('**/www/**') }}
+          key: ${{ runner.os }}-website-preview
           restore-keys: |
-            ${{ runner.os }}-website
+            ${{ runner.os }}-website-preview
 
       - name: Install dependencies
         run: npm install
@@ -48,7 +48,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./www
-          key: ${{ runner.os }}-website
+          key: ${{ runner.os }}-website-preview
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
