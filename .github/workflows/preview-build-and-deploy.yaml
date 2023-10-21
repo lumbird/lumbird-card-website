@@ -25,12 +25,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-modules-
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build website
-        run: npm run build
-
       - name: Cache website artifacts
         uses: actions/cache@v2
         with:
@@ -38,6 +32,12 @@ jobs:
           key: ${{ runner.os }}-website-${{ hashFiles('**/www/**') }}
           restore-keys: |
             ${{ runner.os }}-website
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build website
+        run: npm run build
 
   deploy:
     runs-on: ubuntu-latest
