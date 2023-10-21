@@ -1,8 +1,5 @@
-name: Preview Build and Deploy Website
-on:
-  push:
-    branches:
-      - main
+name: Production Build and Deploy Website
+on: workflow_dispatch
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,17 +18,17 @@ jobs:
         uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-node-modules-preview
+          key: ${{ runner.os }}-node-modules-production
           restore-keys: |
-            ${{ runner.os }}-node-modules-preview
+            ${{ runner.os }}-node-modules-production
 
       - name: Cache website artifacts
         uses: actions/cache@v2
         with:
           path: ./www
-          key: ${{ runner.os }}-website-preview
+          key: ${{ runner.os }}-website-production
           restore-keys: |
-            ${{ runner.os }}-website-preview
+            ${{ runner.os }}-website-production
 
       - name: Install dependencies
         run: npm install
@@ -48,12 +45,12 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ./www
-          key: ${{ runner.os }}-website-preview
+          key: ${{ runner.os }}-website-production
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          deploy_key: ${{ secrets.PREVIEW_DEPLOY_KEY }}
-          external_repository: lumbird/preview-card-page
+          deploy_key: ${{ secrets.PRODUCTION_DEPLOY_KEY }}
+          external_repository: lumbird/hello
           publish_branch: main
           publish_dir: ./www

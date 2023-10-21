@@ -3,7 +3,7 @@ on: workflow_dispatch
 jobs:
   clear:
     runs-on: ubuntu-latest
-    if: github.repository == 'knijam/card-website'
+    if: github.repository == 'lumbird/card-website'
 
     steps:
       - name: Use gh api
