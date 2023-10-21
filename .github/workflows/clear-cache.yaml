@@ -6,7 +6,7 @@ jobs:
     if: github.repository == 'knijam/card-website'
 
     steps:
-      - name: Delete Repository Cache
-        uses: TheRealRyGuy/clear-cache-action@master
-        env:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Use gh api
+        run: |
+          gh auth login --with-token < ${{ secrets.GITHUB_TOKEN }}
+          gh api -X DELETE /repos/${{ github.repository_owner }}/${{ github.repository }}/actions/caches/:id
