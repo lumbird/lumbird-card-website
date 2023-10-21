@@ -265,7 +265,7 @@ h1 {
     margin: 0;
 }
 
-.button-list li {
+.button-list a {
     list-style: none;
     background-color: var(--theme-base);
     color: var(--theme-base-contrast);

@@ -7,7 +7,7 @@ import yaml from 'js-yaml';
 
 export function build() {
   // Load config
-  const config = yaml.load(fs.readFileSync('src/config.yaml', 'utf8')) as {[key: string]: TemplateConfig};
+  const config = yaml.load(fs.readFileSync('./src/config.yaml', 'utf8')) as {[key: string]: TemplateConfig};
   const template = config.default;
 
   // Root template file paths
@@ -23,5 +23,11 @@ export function build() {
   extractTemplates(sourceRootTemplate, buildRootTemplate);
 
   // Write output page
-  fs.writeFileSync(buildRootTemplate, loadAndInject('www/index.html', {}));
+  fs.writeFileSync(buildRootTemplate, loadAndInject('www/index.html', {
+    redirectLinkedIn: template.redirects.linkedin,
+    redirectCVs: template.redirects.cvs,
+    redirectGitHub: template.redirects.github,
+    redirectEmail: template.redirects.email,
+    redirectPhone: template.redirects.phone
+  }));
 }
