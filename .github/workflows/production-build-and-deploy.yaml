@@ -54,3 +54,5 @@ jobs:
           external_repository: lumbird/hello
           publish_branch: main
           publish_dir: ./www
+          force_orphan: true
+          keep_files: false
