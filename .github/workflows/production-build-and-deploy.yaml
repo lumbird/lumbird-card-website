@@ -31,7 +31,7 @@ jobs:
             ${{ runner.os }}-website-production
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build website
         run: npm run build

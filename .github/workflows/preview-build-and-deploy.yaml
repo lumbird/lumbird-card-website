@@ -34,7 +34,7 @@ jobs:
             ${{ runner.os }}-website-preview
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build website
         run: npm run build
