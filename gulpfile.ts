@@ -62,17 +62,19 @@ gulp.task('copy-resources', async function () {
 
 // Copy all the fonts
 gulp.task('copy-fonts', async function () {
-  await (await glob(`./node_modules/@fontsource/albert-sans/**/*`)).forEach(async (file) => {
+  const fontSource = './node_modules/@fontsource/albert-sans';
+
+  await (await glob(`${fontSource}/**/*`)).forEach(async (file) => {
     return gulp.src(file)
     .pipe(rename(({dirname, basename, extname}: {dirname: string, basename: string, extname: string}) => {
       
       return {
-        dirname: dirname.replace(`node_modules${path.sep}@fontsource`, ''),
+        dirname: path.relative(fontSource, dirname),
         basename,
         extname
       };
     }))
-    .pipe(gulp.dest(`${assetDir}`));
+    .pipe(gulp.dest(`${assetDir}/albert-sans`));
   });
 })
 
