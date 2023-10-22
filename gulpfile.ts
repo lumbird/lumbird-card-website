@@ -66,7 +66,8 @@ gulp.task('copy-fonts', async function () {
 
   return globSync([
     `${fontSource}/400.css`,
-    `${fontSource}/files/albert-sans-all-400-normal.woff`
+    `${fontSource}/files/albert-sans-all-400-normal.woff`,
+    `${fontSource}/files/albert-sans-latin-400-normal.woff2`
   ], {nodir: true}).forEach(async (file: string) => {
 
     const filePath = path.normalize(file)
