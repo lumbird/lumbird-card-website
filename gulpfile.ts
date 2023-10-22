@@ -2,6 +2,7 @@ import * as gulp from 'gulp';
 import { glob, globSync, globStream, globStreamSync, Glob } from 'glob';
 import * as fs from 'fs';
 import * as path from 'path';
+
 const htmlmin = require('gulp-htmlmin');
 const replace = require('gulp-replace');
 const rename = require('gulp-rename');
@@ -60,28 +61,55 @@ gulp.task('copy-assets', async function () {
     .pipe(rename(({dirname, basename, extname}: {dirname: string, basename: string, extname: string}) => {
       
       return {
-        dirname: dirname.replace(`node_modules${path.sep}@fontsource${path.sep}albert-sans`, ''),
+        dirname: dirname.replace(`node_modules${path.sep}@fontsource`, ''),
         basename,
         extname
       };
     }))
-    .pipe(gulp.dest(`${assetDir}albert-sans`));
+    .pipe(gulp.dest(`${assetDir}`));
   });
 })
 
+// Task to watch for changes and run tasks automatically
+gulp.task('clean', async function () {
+  async function deleteDirectory(dirPath: string) {
+    const files = await fs.readdirSync(dirPath);
+
+    for (const file of files) {
+      const filePath = path.join(dirPath, file);
+      const fileStat = await fs.lstatSync(filePath);
+
+      if (fileStat.isDirectory()) {
+        // Recursively delete subdirectories
+        await deleteDirectory(filePath);
+      } else {
+        // Delete files, including hidden files starting with '.'
+        await fs.unlinkSync(filePath);
+      }
+    }
+
+    // Remove the empty directory
+    await fs.rmdirSync(dirPath);
+  }
+
+  if (fs.existsSync(buildDir)) {
+    await deleteDirectory(buildDir);
+  }
+});
 
 
 
 // Task to watch for changes and run tasks automatically
 gulp.task('watch', function () {
+  gulp.series('clean');
   gulp.watch(`${srcDir}/index.html`, gulp.series('inject-data'));
   gulp.watch(`${srcDir}/style.css`, gulp.series('minify-css'));
   gulp.watch(`${srcDir}/animation.css`, gulp.series('minify-css'));
 });
 
 // Default task
-gulp.task('default', gulp.parallel('inject-data', 'minify-css', 'copy-assets', 'watch'));
+gulp.task('default', gulp.series('clean', 'inject-data', 'minify-css', 'copy-assets', 'watch'));
 
 // Just build task
-gulp.task('build', gulp.parallel('inject-data', 'minify-css', 'copy-assets'));
+gulp.task('build', gulp.series('clean', 'inject-data', 'minify-css', 'copy-assets'));
 
