@@ -1,5 +1,5 @@
 import * as gulp from 'gulp';
-import { glob, globSync, globStream, globStreamSync, Glob } from 'glob';
+import { glob, globSync, globStream, globStreamSync, Glob, Path } from 'glob';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -64,21 +64,23 @@ gulp.task('copy-resources', async function () {
 gulp.task('copy-fonts', async function () {
   const fontSource = './node_modules/@fontsource/albert-sans';
 
-  await (await glob([
+  return globSync([
     `${fontSource}/400.css`,
-    `${fontSource}/files/albert-sans-all-400-normal.woff`,
-    `${fontSource}/files/albert-sans-latin-400-normal.woff2`,
-  ])).forEach(async (file) => {
-    return gulp.src(file)
-    .pipe(rename(({dirname, basename, extname}: {dirname: string, basename: string, extname: string}) => {
-      
-      return {
-        dirname: path.relative(fontSource, dirname),
-        basename,
-        extname
-      };
-    }))
-    .pipe(gulp.dest(`${assetDir}albert-sans`));
+    `${fontSource}/files/albert-sans-all-400-normal.woff`
+  ], {nodir: true}).forEach(async (file: string) => {
+
+    const filePath = path.normalize(file)
+    const fileDir = path.dirname(filePath);
+    const targetPath = `${assetDir}albert-sans/`+path.relative(fontSource, filePath);
+    const targetDir = path.dirname(targetPath);
+
+    // Ensure the directory exists
+    if (!fs.existsSync(targetDir)){
+      fs.mkdirSync(targetDir, { recursive: true });
+    }
+
+    // Copy file
+    fs.copyFileSync(filePath, targetPath);
   });
 })
 
