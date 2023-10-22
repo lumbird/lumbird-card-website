@@ -17,14 +17,6 @@ jobs:
         with:
           node-version: 16
 
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-preview
-          restore-keys: |
-            ${{ runner.os }}-node-modules-preview
-
       - name: Cache website artifacts
         uses: actions/cache@v2
         with:
