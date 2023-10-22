@@ -31,5 +31,8 @@ jobs:
           publish_branch: main
           publish_dir: ./www
           force_orphan: true
-          keep_files: false
+          keep_files: true
+          enable_jekyll: false
+          disable_nojekyll: false
+          exclude_assets: .github
           
