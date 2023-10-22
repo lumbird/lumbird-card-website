@@ -17,8 +17,6 @@ export function build() {
   // Ensure that the folder exists
   if (!fs.existsSync('www')) {
     fs.mkdirSync('www');
-
-    fs.writeFileSync('www/.nojekyll','');
   }
 
   // Extract Templates and remove the templates from the extraction
