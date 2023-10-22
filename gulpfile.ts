@@ -1,20 +1,21 @@
 import * as gulp from 'gulp';
 import { glob, globSync, globStream, globStreamSync, Glob } from 'glob';
+import * as fs from 'fs';
+import * as path from 'path';
 const htmlmin = require('gulp-htmlmin');
 const replace = require('gulp-replace');
 const rename = require('gulp-rename');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const cleanCSS = require('gulp-clean-css');
-const fs = require('fs');
 const spawn = require('child_process').spawn;
 
 import { build } from './data-injector'
 
 // Paths
-const srcDir = 'src/';
-const buildDir = 'www/';
-const assetDir = 'www/assets/';
+const srcDir = './src/';
+const buildDir = './www/';
+const assetDir = './www/assets/';
 
 // Task to inject data from config.json into index.html
 gulp.task('inject-data', async function (done: () => void) {
@@ -43,25 +44,28 @@ gulp.task('minify-css', async function () {
 // Copy all the asset dependencies
 gulp.task('copy-assets', async function () {
 
-  await gulp.src([
-    './LICENSE',
-    'src/_config.yml'
-  ])
-  .pipe(gulp.dest(`${buildDir}`));
-
+  // Copy all the assets over to the assets folder
   await gulp.src(`${srcDir}assets/**/*`)
   .pipe(gulp.dest(`${buildDir}assets/`));
+
+  // Expand the resources over the root of the build directory
+  await gulp.src([
+    `${srcDir}resources/**/*`,
+    `${srcDir}resources/**/.*`
+  ])
+  .pipe(gulp.dest(`${buildDir}`));
 
   await (await glob(`./node_modules/@fontsource/albert-sans/**/*`)).forEach(async (file) => {
     return gulp.src(file)
     .pipe(rename(({dirname, basename, extname}: {dirname: string, basename: string, extname: string}) => {
+      
       return {
-        dirname: dirname.replace('node_modules\\@fontsource', ''),
+        dirname: dirname.replace(`node_modules${path.sep}@fontsource${path.sep}albert-sans`, ''),
         basename,
         extname
       };
     }))
-    .pipe(gulp.dest(`${assetDir}`));
+    .pipe(gulp.dest(`${assetDir}albert-sans`));
   });
 })
 
