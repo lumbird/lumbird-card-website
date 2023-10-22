@@ -42,12 +42,15 @@ gulp.task('minify-css', async function () {
   .pipe(gulp.dest(buildDir));
 });
 
-// Copy all the asset dependencies
+// Copy all the asset
 gulp.task('copy-assets', async function () {
-
   // Copy all the assets over to the assets folder
   await gulp.src(`${srcDir}assets/**/*`)
   .pipe(gulp.dest(`${buildDir}assets/`));
+})
+
+// Copy all the resources
+gulp.task('copy-resources', async function () {
 
   // Expand the resources over the root of the build directory
   await gulp.src([
@@ -55,7 +58,10 @@ gulp.task('copy-assets', async function () {
     `${srcDir}resources/**/.*`
   ])
   .pipe(gulp.dest(`${buildDir}`));
+});
 
+// Copy all the fonts
+gulp.task('copy-fonts', async function () {
   await (await glob(`./node_modules/@fontsource/albert-sans/**/*`)).forEach(async (file) => {
     return gulp.src(file)
     .pipe(rename(({dirname, basename, extname}: {dirname: string, basename: string, extname: string}) => {
@@ -97,8 +103,6 @@ gulp.task('clean', async function () {
   }
 });
 
-
-
 // Task to watch for changes and run tasks automatically
 gulp.task('watch', function () {
   gulp.series('clean');
@@ -108,8 +112,23 @@ gulp.task('watch', function () {
 });
 
 // Default task
-gulp.task('default', gulp.series('clean', 'inject-data', 'minify-css', 'copy-assets', 'watch'));
+gulp.task('default', gulp.series(
+  'clean', 
+  'inject-data', 
+  'minify-css', 
+  'copy-assets',
+  'copy-resources',
+  'copy-fonts',
+  'watch'
+));
 
 // Just build task
-gulp.task('build', gulp.series('clean', 'inject-data', 'minify-css', 'copy-assets'));
+gulp.task('build', gulp.series(
+  'clean', 
+  'inject-data', 
+  'minify-css', 
+  'copy-assets',
+  'copy-resources',
+  'copy-fonts'
+));
 
