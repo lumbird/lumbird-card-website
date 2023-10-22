@@ -1,7 +1,7 @@
 name: Production Build and Deploy Website
 on: workflow_dispatch
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     if: github.repository == 'lumbird/card-website'
 
@@ -14,30 +14,11 @@ jobs:
         with:
           node-version: 16
 
-      - name: Cache website artifacts
-        uses: actions/cache@v2
-        with:
-          path: ./www
-          key: ${{ runner.os }}-website-production
-          restore-keys: |
-            ${{ runner.os }}-website-production
-
       - name: Install dependencies
         run: npm ci
 
       - name: Build website
         run: npm run build
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Cache website artifacts
-        uses: actions/cache@v2
-        with:
-          path: ./www
-          key: ${{ runner.os }}-website-production
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
