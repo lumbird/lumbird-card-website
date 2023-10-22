@@ -1,8 +1,0 @@
-safe: true
-include:
-  - assets/
-  - index.html
-  - style.min.css
-  - animation.min.css
-excludes:
-  - LICENSE
