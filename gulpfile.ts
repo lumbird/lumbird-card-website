@@ -44,7 +44,8 @@ gulp.task('minify-css', async function () {
 gulp.task('copy-assets', async function () {
 
   await gulp.src([
-    './LICENSE'
+    './LICENSE',
+    'src/_config.yml'
   ])
   .pipe(gulp.dest(`${buildDir}`));
 
