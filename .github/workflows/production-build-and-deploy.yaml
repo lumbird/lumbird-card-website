@@ -3,7 +3,6 @@ on: workflow_dispatch
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    if: github.repository == 'lumbird/card-website'
 
     steps:
       - name: Checkout code
