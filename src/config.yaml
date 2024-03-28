@@ -1,1 +1,6 @@
-default: true
+default:
+  redirects:
+    discord: https://bit.ly/3SaiejW
+    twitter: https://bit.ly/3SbfDqi
+    vrchat: https://bit.ly/3tPrZKd
+    github: https://github.com/lumbird

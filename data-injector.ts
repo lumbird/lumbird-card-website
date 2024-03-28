@@ -23,5 +23,10 @@ export function build() {
   extractTemplates(sourceRootTemplate, buildRootTemplate);
 
   // Write output page
-  fs.writeFileSync(buildRootTemplate, loadAndInject('www/index.html', {}));
+  fs.writeFileSync(buildRootTemplate, loadAndInject('www/index.html', {
+    redirectDiscord: template.redirects.discord,
+    redirectTwitter: template.redirects.twitter,
+    redirectVRChat: template.redirects.vrchat,
+    redirectGitHub: template.redirects.github
+  }));
 }
