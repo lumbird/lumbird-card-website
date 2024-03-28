@@ -23,11 +23,5 @@ export function build() {
   extractTemplates(sourceRootTemplate, buildRootTemplate);
 
   // Write output page
-  fs.writeFileSync(buildRootTemplate, loadAndInject('www/index.html', {
-    redirectLinkedIn: template.redirects.linkedin,
-    redirectCVs: template.redirects.cvs,
-    redirectGitHub: template.redirects.github,
-    redirectEmail: template.redirects.email,
-    redirectPhone: template.redirects.phone
-  }));
+  fs.writeFileSync(buildRootTemplate, loadAndInject('www/index.html', {}));
 }
